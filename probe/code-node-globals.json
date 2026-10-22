@@ -1,0 +1,16 @@
+{
+  "id": "probeGlobals0001",
+  "name": "Code node globals probe",
+  "active": false,
+  "nodes": [
+    { "parameters": {}, "name": "Manual", "type": "n8n-nodes-base.manualTrigger", "typeVersion": 1, "position": [0, 0] },
+    {
+      "parameters": {
+        "jsCode": "const names = ['fetch','URL','URLSearchParams','AbortController','structuredClone','Blob','FormData','TextEncoder','atob','btoa','Buffer','setTimeout','process','crypto','require'];\nconst out = {};\nfor (const n of names) { try { out[n] = eval('typeof ' + n); } catch (e) { out[n] = 'error: ' + e.message; } }\nout['this.helpers.httpRequest'] = typeof this.helpers?.httpRequest;\nfor (const m of ['crypto','fs','moment','lodash']) { try { require(m); out['require(' + m + ')'] = 'ok'; } catch (e) { out['require(' + m + ')'] = e.message; } }\nreturn [{ json: out }];"
+      },
+      "name": "Probe", "type": "n8n-nodes-base.code", "typeVersion": 2, "position": [220, 0]
+    }
+  ],
+  "connections": { "Manual": { "main": [[{ "node": "Probe", "type": "main", "index": 0 }]] } },
+  "settings": {}
+}
